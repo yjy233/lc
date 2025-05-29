@@ -9,3 +9,8 @@ cc_binary(
     name = "lc12",
     srcs = ["lc12.cc"],
 )
+
+cc_binary(
+    name = "lc13",
+    srcs = ["lc13.cc"],
+)
