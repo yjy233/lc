@@ -14,3 +14,8 @@ cc_binary(
     name = "lc13",
     srcs = ["lc13.cc"],
 )
+
+cc_binary(
+    name = "lc15",
+    srcs = ["lc15.cc"],
+)

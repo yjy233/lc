@@ -2,6 +2,9 @@
 
 using namespace std;
 
+/*
+    双指针，两端中比较矮的那一端移动
+*/
 class Solution {
 public:
     int maxArea(vector<int>& height) {
