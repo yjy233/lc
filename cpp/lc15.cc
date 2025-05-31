@@ -73,7 +73,12 @@ int main() {
 
     Solution s;
     auto nums = vector<int>{-1,2,1,-4};
-    auto res = s.threeSumClosest(nums,1);
-    cout<<res<<endl;
+    auto res = s.threeSum(nums);
+    
+    for( auto &e:res){
+        for (auto &m:e) cout<<m<<" ";
+        cout<<endl;
+    }
+    
     return 0;
 }
