@@ -39,3 +39,11 @@ cc_binary(
     name = "lc22",
     srcs = ["lc22.cc"],
 )
+
+cc_binary(
+    name = "lc25",
+    srcs = ["lc25.cc"],
+    deps = [
+        ":list_node",
+    ],
+)
