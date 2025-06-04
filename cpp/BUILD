@@ -52,3 +52,8 @@ cc_binary(
     name = "lc26",
     srcs = ["lc26.cc"],
 )
+
+cc_binary(
+    name = "lc28",
+    srcs = ["lc28.cc"],
+)
