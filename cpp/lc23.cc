@@ -7,45 +7,54 @@
 using namespace std;
 
 
-
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         int k = lists.size();
-        if (k <= 0) return nullptr;
-
-        auto res = new ListNode;
-        res->next = nullptr;
-        auto tmp = res;
-            
-        auto compareF = [](const ListNode* l0, const ListNode* l1) {
-            if (!l0) return false;
-            if (!l1) return true;
-            return l0->val > l1->val;
-        };
-
-        make_heap(lists.begin(),lists.end(),compareF);
-
-        while(k>1) {
-            pop_heap(lists.begin(),lists.begin()+k,compareF);
-                
-            if (lists[k-1]) {
-                tmp->next = lists[k-1];
-                lists[k-1] = lists[k-1]->next;
-                tmp = tmp->next;
-                tmp->next = nullptr;
-            }
-
-            if (!lists[k-1]) k--;
-            push_heap(lists.begin(),lists.begin()+k,compareF);
+        vector<ListNode*> tmp;
+        tmp.reserve(k);
+        for (auto ptr:lists) {
+            if (ptr == nullptr) continue;
+            tmp.emplace_back(ptr);
         }
 
-        if (lists[0]) tmp->next = lists[0];
+        swap(tmp, lists);
+        
+        auto f = [](ListNode* i,ListNode* j){
+            if (i==nullptr) return false;
+            if (j==nullptr) return true;
 
-            
-        tmp = res->next;
-        delete res;
-        return tmp;
+            return i->val < j->val;
+        };
+        make_heap(lists.begin(),lists.end(),f);
+
+        auto head = new ListNode;
+        head->next = nullptr;
+
+        auto ptr = head;
+
+        while(lists.size() > 1) {
+
+            pop_heap(lists.begin(),lists.end(),f);
+            ListNode* item = lists.back();
+
+            ptr->next = item;
+            item = item->next;
+            ptr = ptr->next;
+            ptr->next = nullptr;
+
+            lists.pop_back();
+            if (ptr != nullptr) {
+                lists.emplace_back(ptr);
+                push_heap(lists.begin(),lists.end(),f);
+            }
+
+        } 
+
+        ListNode* res = head->next;
+        delete(head);
+        
+        return res;
     }
 };
 

@@ -102,6 +102,22 @@
     "typeinfo": "cpp",
     "variant": "cpp",
     "algorithm": "cpp",
-    "__config": "cpp"
+    "__config": "cpp",
+    "__tree": "cpp",
+    "charconv": "cpp",
+    "cinttypes": "cpp",
+    "memory": "cpp",
+    "forward_list": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "sstream": "cpp",
+    "__undef_macros": "cpp",
+    "unordered_set": "cpp",
+    "cstddef": "cpp",
+    "list": "cpp",
+    "random": "cpp",
+    "atomic": "cpp"
   }
 }

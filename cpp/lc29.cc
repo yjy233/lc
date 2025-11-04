@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 /*
      思路就是不断 判断翻倍，但是要注意要都转成负数，避免int 正数溢出
 
