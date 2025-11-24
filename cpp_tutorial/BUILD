@@ -5,3 +5,8 @@ cc_library(
     name = "unique_ptr",
     srcs = ["smart_ptr.cc"],
 )
+
+cc_binary(
+    name = "smart_shared_ptr",
+    srcs = ["smart_shared_ptr.cc"],
+)
