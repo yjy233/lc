@@ -1,0 +1,3 @@
+# Homebrew include and library paths for external dependencies
+build --action_env=CPLUS_INCLUDE_PATH=/opt/homebrew/include
+build --action_env=LIBRARY_PATH=/opt/homebrew/lib
