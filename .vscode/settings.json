@@ -119,5 +119,13 @@
     "list": "cpp",
     "random": "cpp",
     "atomic": "cpp"
-  }
+  },
+  "editor.formatOnSave": true,
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "C_Cpp.clang_format_style": "file",
+  "C_Cpp.clang_format_fallbackStyle": "LLVM",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1
 }
