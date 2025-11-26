@@ -118,7 +118,8 @@
     "cstddef": "cpp",
     "list": "cpp",
     "random": "cpp",
-    "atomic": "cpp"
+    "atomic": "cpp",
+    "future": "cpp"
   },
   "editor.formatOnSave": true,
   "[cpp]": {
