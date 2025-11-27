@@ -11,4 +11,4 @@ cc_binary(
         "-L/opt/homebrew/lib",
         "-lfaiss",
     ],
-5=\
+)
