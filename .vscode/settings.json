@@ -128,5 +128,13 @@
   "C_Cpp.clang_format_style": "file",
   "C_Cpp.clang_format_fallbackStyle": "LLVM",
   "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1
+  "files.autoSaveDelay": 1,
+  "editor.inlineSuggest.enabled": false,
+  "github.copilot.enable": {
+    "*": false
+  },
+  "QoderCN.cloudModelEnable": false,
+  "QoderCN.cloudModelAutoTriggerDisplayRule": false,
+  "QoderCN.localMachineModel": false,
+  "QoderCN.methodQuickOperation": false
 }
