@@ -70,6 +70,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class MinStack {
@@ -105,6 +106,27 @@ public:
  */
 
 int main() {
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto ops = lctest::parse(R"LC(["MinStack","push","push","push","getMin","pop","top","getMin"])LC");
+        auto args = lctest::parse(R"LC([[],[-2],[0],[-3],[],[],[],[]])LC");
+        MinStack* obj = nullptr;
+        std::vector<std::string> out;
+        for (size_t i = 0; i < ops.arr.size(); i++) {
+            std::string op = ops.arr[i].str;
+            auto& a = args.arr[i].arr;
+            if (op == "MinStack") { obj = new MinStack(); out.push_back("null"); }
+            else if (op == "push") { obj->push(lctest::toInt(a[0])); out.push_back("null"); }
+            else if (op == "pop") { obj->pop(); out.push_back("null"); }
+            else if (op == "top") { out.push_back(lctest::show(obj->top())); }
+            else if (op == "getMin") { out.push_back(lctest::show(obj->getMin())); }
+        }
+        std::string actual = "[";
+        for (size_t i = 0; i < out.size(); i++) { if (i) actual += ","; actual += out[i]; }
+        actual += "]";
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([null,null,null,null,-3,null,0,-2])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

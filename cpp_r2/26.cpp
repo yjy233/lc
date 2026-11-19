@@ -72,6 +72,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class Solution {
@@ -82,7 +83,21 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toIntVec(lctest::parse(R"LC([1,1,2])LC"));
+        Solution sol;
+        auto res = sol.removeDuplicates(a0);
+        fails += lctest::printOnly(++caseNo, lctest::show(res), R"LC(2, nums = [1,2,_])LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toIntVec(lctest::parse(R"LC([0,0,1,1,1,2,2,3,3,4])LC"));
+        Solution sol;
+        auto res = sol.removeDuplicates(a0);
+        fails += lctest::printOnly(++caseNo, lctest::show(res), R"LC(5, nums = [0,1,2,3,4,_,_,_,_,_])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

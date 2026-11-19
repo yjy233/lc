@@ -49,6 +49,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class Solution {
@@ -59,7 +60,21 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("babad")LC"));
+        Solution sol;
+        auto res = sol.longestPalindrome(a0);
+        fails += lctest::printOnly(++caseNo, lctest::show(res), R"LC("bab")LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("cbbd")LC"));
+        Solution sol;
+        auto res = sol.longestPalindrome(a0);
+        fails += lctest::printOnly(++caseNo, lctest::show(res), R"LC("bb")LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

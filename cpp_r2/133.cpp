@@ -84,6 +84,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 // Definition for a Node.
@@ -113,7 +114,97 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto adj = lctest::parse(R"LC([[2,4],[1,3],[2,4],[1,3]])LC");
+        std::vector<Node*> nodes;
+        for (size_t i = 0; i < adj.arr.size(); i++) nodes.push_back(new Node((int)i + 1));
+        for (size_t i = 0; i < adj.arr.size(); i++)
+            for (auto& nb : adj.arr[i].arr) nodes[i]->neighbors.push_back(nodes[lctest::toInt(nb) - 1]);
+        Solution sol;
+        Node* cloned = nodes.empty() ? nullptr : sol.cloneGraph(nodes[0]);
+        std::string actual = "[]";
+        if (cloned) {
+            std::vector<Node*> q{cloned};
+            std::set<int> seen;
+            std::map<int, std::vector<int>> adjOut;
+            for (size_t h = 0; h < q.size(); h++) {
+                Node* n = q[h];
+                if (seen.count(n->val)) continue;
+                seen.insert(n->val);
+                adjOut[n->val];
+                for (Node* nb : n->neighbors) {
+                    adjOut[n->val].push_back(nb->val);
+                    if (!seen.count(nb->val)) q.push_back(nb);
+                }
+            }
+            std::vector<std::vector<int>> out;
+            for (auto& kv : adjOut) out.push_back(kv.second);
+            actual = lctest::show(out);
+        }
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([[2,4],[1,3],[2,4],[1,3]])LC", true, true);
+    }
+    // case 2
+    {
+        auto adj = lctest::parse(R"LC([[]])LC");
+        std::vector<Node*> nodes;
+        for (size_t i = 0; i < adj.arr.size(); i++) nodes.push_back(new Node((int)i + 1));
+        for (size_t i = 0; i < adj.arr.size(); i++)
+            for (auto& nb : adj.arr[i].arr) nodes[i]->neighbors.push_back(nodes[lctest::toInt(nb) - 1]);
+        Solution sol;
+        Node* cloned = nodes.empty() ? nullptr : sol.cloneGraph(nodes[0]);
+        std::string actual = "[]";
+        if (cloned) {
+            std::vector<Node*> q{cloned};
+            std::set<int> seen;
+            std::map<int, std::vector<int>> adjOut;
+            for (size_t h = 0; h < q.size(); h++) {
+                Node* n = q[h];
+                if (seen.count(n->val)) continue;
+                seen.insert(n->val);
+                adjOut[n->val];
+                for (Node* nb : n->neighbors) {
+                    adjOut[n->val].push_back(nb->val);
+                    if (!seen.count(nb->val)) q.push_back(nb);
+                }
+            }
+            std::vector<std::vector<int>> out;
+            for (auto& kv : adjOut) out.push_back(kv.second);
+            actual = lctest::show(out);
+        }
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([[]])LC", true, true);
+    }
+    // case 3
+    {
+        auto adj = lctest::parse(R"LC([])LC");
+        std::vector<Node*> nodes;
+        for (size_t i = 0; i < adj.arr.size(); i++) nodes.push_back(new Node((int)i + 1));
+        for (size_t i = 0; i < adj.arr.size(); i++)
+            for (auto& nb : adj.arr[i].arr) nodes[i]->neighbors.push_back(nodes[lctest::toInt(nb) - 1]);
+        Solution sol;
+        Node* cloned = nodes.empty() ? nullptr : sol.cloneGraph(nodes[0]);
+        std::string actual = "[]";
+        if (cloned) {
+            std::vector<Node*> q{cloned};
+            std::set<int> seen;
+            std::map<int, std::vector<int>> adjOut;
+            for (size_t h = 0; h < q.size(); h++) {
+                Node* n = q[h];
+                if (seen.count(n->val)) continue;
+                seen.insert(n->val);
+                adjOut[n->val];
+                for (Node* nb : n->neighbors) {
+                    adjOut[n->val].push_back(nb->val);
+                    if (!seen.count(nb->val)) q.push_back(nb);
+                }
+            }
+            std::vector<std::vector<int>> out;
+            for (auto& kv : adjOut) out.push_back(kv.second);
+            actual = lctest::show(out);
+        }
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([])LC", true, true);
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

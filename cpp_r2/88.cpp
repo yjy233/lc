@@ -83,6 +83,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class Solution {
@@ -93,7 +94,37 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toIntVec(lctest::parse(R"LC([1,2,3,0,0,0])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(3)LC"));
+        auto a2 = lctest::toIntVec(lctest::parse(R"LC([2,5,6])LC"));
+        auto a3 = lctest::toInt(lctest::parse(R"LC(3)LC"));
+        Solution sol;
+        sol.merge(a0, a1, a2, a3);
+        fails += lctest::check(++caseNo, a0, R"LC([1,2,2,3,5,6])LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toIntVec(lctest::parse(R"LC([1])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(1)LC"));
+        auto a2 = lctest::toIntVec(lctest::parse(R"LC([])LC"));
+        auto a3 = lctest::toInt(lctest::parse(R"LC(0)LC"));
+        Solution sol;
+        sol.merge(a0, a1, a2, a3);
+        fails += lctest::check(++caseNo, a0, R"LC([1])LC");
+    }
+    // case 3
+    {
+        auto a0 = lctest::toIntVec(lctest::parse(R"LC([0])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(0)LC"));
+        auto a2 = lctest::toIntVec(lctest::parse(R"LC([1])LC"));
+        auto a3 = lctest::toInt(lctest::parse(R"LC(1)LC"));
+        Solution sol;
+        sol.merge(a0, a1, a2, a3);
+        fails += lctest::check(++caseNo, a0, R"LC([1])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

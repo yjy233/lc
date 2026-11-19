@@ -58,6 +58,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class Solution {
@@ -68,7 +69,28 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("aab")LC"));
+        Solution sol;
+        auto res = sol.minCut(a0);
+        fails += lctest::check(++caseNo, res, R"LC(1)LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("a")LC"));
+        Solution sol;
+        auto res = sol.minCut(a0);
+        fails += lctest::check(++caseNo, res, R"LC(0)LC");
+    }
+    // case 3
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("ab")LC"));
+        Solution sol;
+        auto res = sol.minCut(a0);
+        fails += lctest::check(++caseNo, res, R"LC(1)LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

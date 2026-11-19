@@ -71,6 +71,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class LRUCache {
@@ -96,6 +97,25 @@ public:
  */
 
 int main() {
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto ops = lctest::parse(R"LC(["LRUCache","put","put","get","put","get","put","get","get","get"])LC");
+        auto args = lctest::parse(R"LC([[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]])LC");
+        LRUCache* obj = nullptr;
+        std::vector<std::string> out;
+        for (size_t i = 0; i < ops.arr.size(); i++) {
+            std::string op = ops.arr[i].str;
+            auto& a = args.arr[i].arr;
+            if (op == "LRUCache") { obj = new LRUCache(lctest::toInt(a[0])); out.push_back("null"); }
+            else if (op == "put") { obj->put(lctest::toInt(a[0]), lctest::toInt(a[1])); out.push_back("null"); }
+            else if (op == "get") { out.push_back(lctest::show(obj->get(lctest::toInt(a[0])))); }
+        }
+        std::string actual = "[";
+        for (size_t i = 0; i < out.size(); i++) { if (i) actual += ","; actual += out[i]; }
+        actual += "]";
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([null, null, null, 1, null, -1, null, -1, 3, 4])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

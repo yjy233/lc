@@ -63,6 +63,7 @@
 #include <utility>
 #include <vector>
 #include "node.h"
+#include "test_util.h"
 using namespace std;
 
 /**
@@ -84,7 +85,31 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toTree(lctest::parse(R"LC([5,4,8,11,null,13,4,7,2,null,null,5,1])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(22)LC"));
+        Solution sol;
+        auto res = sol.pathSum(a0, a1);
+        fails += lctest::check(++caseNo, res, R"LC([[5,4,11,2],[5,8,4,5]])LC", true);
+    }
+    // case 2
+    {
+        auto a0 = lctest::toTree(lctest::parse(R"LC([1,2,3])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(5)LC"));
+        Solution sol;
+        auto res = sol.pathSum(a0, a1);
+        fails += lctest::check(++caseNo, res, R"LC([])LC", true);
+    }
+    // case 3
+    {
+        auto a0 = lctest::toTree(lctest::parse(R"LC([1,2])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(0)LC"));
+        Solution sol;
+        auto res = sol.pathSum(a0, a1);
+        fails += lctest::check(++caseNo, res, R"LC([])LC", true);
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

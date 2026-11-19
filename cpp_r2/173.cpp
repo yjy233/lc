@@ -74,6 +74,7 @@
 #include <utility>
 #include <vector>
 #include "node.h"
+#include "test_util.h"
 using namespace std;
 
 /**
@@ -110,6 +111,25 @@ public:
  */
 
 int main() {
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto ops = lctest::parse(R"LC(["BSTIterator","next","next","hasNext","next","hasNext","next","hasNext","next","hasNext"])LC");
+        auto args = lctest::parse(R"LC([[[7,3,15,null,null,9,20]],[],[],[],[],[],[],[],[],[]])LC");
+        BSTIterator* obj = nullptr;
+        std::vector<std::string> out;
+        for (size_t i = 0; i < ops.arr.size(); i++) {
+            std::string op = ops.arr[i].str;
+            auto& a = args.arr[i].arr;
+            if (op == "BSTIterator") { obj = new BSTIterator(lctest::toTree(a[0])); out.push_back("null"); }
+            else if (op == "next") { out.push_back(lctest::show(obj->next())); }
+            else if (op == "hasNext") { out.push_back(lctest::show(obj->hasNext())); }
+        }
+        std::string actual = "[";
+        for (size_t i = 0; i < out.size(); i++) { if (i) actual += ","; actual += out[i]; }
+        actual += "]";
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([null, 3, 7, true, 9, true, 15, true, 20, false])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

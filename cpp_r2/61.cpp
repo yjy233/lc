@@ -53,6 +53,7 @@
 #include <utility>
 #include <vector>
 #include "node.h"
+#include "test_util.h"
 using namespace std;
 
 /**
@@ -73,7 +74,23 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toList(lctest::parse(R"LC([1,2,3,4,5])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(2)LC"));
+        Solution sol;
+        auto res = sol.rotateRight(a0, a1);
+        fails += lctest::check(++caseNo, res, R"LC([4,5,1,2,3])LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toList(lctest::parse(R"LC([0,1,2])LC"));
+        auto a1 = lctest::toInt(lctest::parse(R"LC(4)LC"));
+        Solution sol;
+        auto res = sol.rotateRight(a0, a1);
+        fails += lctest::check(++caseNo, res, R"LC([2,0,1])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

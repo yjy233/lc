@@ -118,6 +118,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class Solution {
@@ -128,7 +129,42 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("/home/")LC"));
+        Solution sol;
+        auto res = sol.simplifyPath(a0);
+        fails += lctest::check(++caseNo, res, R"LC("/home")LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("/home//foo/")LC"));
+        Solution sol;
+        auto res = sol.simplifyPath(a0);
+        fails += lctest::check(++caseNo, res, R"LC("/home/foo")LC");
+    }
+    // case 3
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("/home/user/Documents/../Pictures")LC"));
+        Solution sol;
+        auto res = sol.simplifyPath(a0);
+        fails += lctest::check(++caseNo, res, R"LC("/home/user/Pictures")LC");
+    }
+    // case 4
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("/../")LC"));
+        Solution sol;
+        auto res = sol.simplifyPath(a0);
+        fails += lctest::check(++caseNo, res, R"LC("/")LC");
+    }
+    // case 5
+    {
+        auto a0 = lctest::toStr(lctest::parse(R"LC("/.../a/../b/c/../d/./")LC"));
+        Solution sol;
+        auto res = sol.simplifyPath(a0);
+        fails += lctest::check(++caseNo, res, R"LC("/.../b/d")LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

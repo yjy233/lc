@@ -60,6 +60,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 class Solution {
@@ -70,7 +71,28 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto a0 = lctest::toIntGrid(lctest::parse(R"LC([[1,3],[2,6],[8,10],[15,18]])LC"));
+        Solution sol;
+        auto res = sol.merge(a0);
+        fails += lctest::check(++caseNo, res, R"LC([[1,6],[8,10],[15,18]])LC");
+    }
+    // case 2
+    {
+        auto a0 = lctest::toIntGrid(lctest::parse(R"LC([[1,4],[4,5]])LC"));
+        Solution sol;
+        auto res = sol.merge(a0);
+        fails += lctest::check(++caseNo, res, R"LC([[1,5]])LC");
+    }
+    // case 3
+    {
+        auto a0 = lctest::toIntGrid(lctest::parse(R"LC([[4,7],[1,4]])LC"));
+        Solution sol;
+        auto res = sol.merge(a0);
+        fails += lctest::check(++caseNo, res, R"LC([[1,7]])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

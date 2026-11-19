@@ -66,6 +66,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 // Definition for a Node.
@@ -92,7 +93,63 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto v = lctest::parse(R"LC([1,2,3,4,5,null,7])LC");
+        Node* root = nullptr;
+        if (!v.arr.empty() && v.arr[0].type != lctest::Value::NUL) {
+            root = new Node(lctest::toInt(v.arr[0]));
+            std::vector<Node*> q{root};
+            size_t head = 0, i = 1;
+            while (head < q.size() && i < v.arr.size()) {
+                Node* n = q[head++];
+                if (i < v.arr.size()) { if (v.arr[i].type != lctest::Value::NUL) { n->left = new Node(lctest::toInt(v.arr[i])); q.push_back(n->left); } i++; }
+                if (i < v.arr.size()) { if (v.arr[i].type != lctest::Value::NUL) { n->right = new Node(lctest::toInt(v.arr[i])); q.push_back(n->right); } i++; }
+            }
+        }
+        Solution sol;
+        Node* res = sol.connect(root);
+        std::vector<std::string> levels;
+        for (Node* level = res; level; level = level->left) {
+            std::string s;
+            for (Node* n = level; n; n = n->next) { if (!s.empty()) s += ","; s += std::to_string(n->val); }
+            levels.push_back(s);
+        }
+        std::string actual = "[";
+        for (size_t i = 0; i < levels.size(); i++) { if (i) actual += ",#,"; actual += levels[i]; }
+        if (!levels.empty()) actual += ",#";
+        actual += "]";
+        fails += lctest::report(++caseNo, actual == R"LC([1,#,2,3,#,4,5,7,#])LC", actual, R"LC([1,#,2,3,#,4,5,7,#])LC");
+    }
+    // case 2
+    {
+        auto v = lctest::parse(R"LC([])LC");
+        Node* root = nullptr;
+        if (!v.arr.empty() && v.arr[0].type != lctest::Value::NUL) {
+            root = new Node(lctest::toInt(v.arr[0]));
+            std::vector<Node*> q{root};
+            size_t head = 0, i = 1;
+            while (head < q.size() && i < v.arr.size()) {
+                Node* n = q[head++];
+                if (i < v.arr.size()) { if (v.arr[i].type != lctest::Value::NUL) { n->left = new Node(lctest::toInt(v.arr[i])); q.push_back(n->left); } i++; }
+                if (i < v.arr.size()) { if (v.arr[i].type != lctest::Value::NUL) { n->right = new Node(lctest::toInt(v.arr[i])); q.push_back(n->right); } i++; }
+            }
+        }
+        Solution sol;
+        Node* res = sol.connect(root);
+        std::vector<std::string> levels;
+        for (Node* level = res; level; level = level->left) {
+            std::string s;
+            for (Node* n = level; n; n = n->next) { if (!s.empty()) s += ","; s += std::to_string(n->val); }
+            levels.push_back(s);
+        }
+        std::string actual = "[";
+        for (size_t i = 0; i < levels.size(); i++) { if (i) actual += ",#,"; actual += levels[i]; }
+        if (!levels.empty()) actual += ",#";
+        actual += "]";
+        fails += lctest::report(++caseNo, actual == R"LC([])LC", actual, R"LC([])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

@@ -71,6 +71,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include "test_util.h"
 using namespace std;
 
 // Definition for a Node.
@@ -95,7 +96,82 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        auto v = lctest::parse(R"LC([[7,null],[13,0],[11,4],[10,2],[1,0]])LC");
+        std::vector<Node*> nodes;
+        for (auto& e : v.arr) nodes.push_back(new Node(lctest::toInt(e.arr[0])));
+        for (size_t i = 0; i < nodes.size(); i++) {
+            nodes[i]->next = i + 1 < nodes.size() ? nodes[i + 1] : nullptr;
+            if (v.arr[i].arr[1].type != lctest::Value::NUL) nodes[i]->random = nodes[lctest::toInt(v.arr[i].arr[1])];
+        }
+        Solution sol;
+        Node* copied = sol.copyRandomList(nodes.empty() ? nullptr : nodes[0]);
+        std::map<Node*, int> idx; int k = 0;
+        for (Node* c = copied; c; c = c->next) idx[c] = k++;
+        std::string actual = "[";
+        bool first = true;
+        for (Node* c = copied; c; c = c->next) {
+            if (!first) actual += ",";
+            first = false;
+            actual += "[" + std::to_string(c->val) + ",";
+            actual += c->random ? std::to_string(idx[c->random]) : "null";
+            actual += "]";
+        }
+        actual += "]";
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([[7,null],[13,0],[11,4],[10,2],[1,0]])LC");
+    }
+    // case 2
+    {
+        auto v = lctest::parse(R"LC([[1,1],[2,1]])LC");
+        std::vector<Node*> nodes;
+        for (auto& e : v.arr) nodes.push_back(new Node(lctest::toInt(e.arr[0])));
+        for (size_t i = 0; i < nodes.size(); i++) {
+            nodes[i]->next = i + 1 < nodes.size() ? nodes[i + 1] : nullptr;
+            if (v.arr[i].arr[1].type != lctest::Value::NUL) nodes[i]->random = nodes[lctest::toInt(v.arr[i].arr[1])];
+        }
+        Solution sol;
+        Node* copied = sol.copyRandomList(nodes.empty() ? nullptr : nodes[0]);
+        std::map<Node*, int> idx; int k = 0;
+        for (Node* c = copied; c; c = c->next) idx[c] = k++;
+        std::string actual = "[";
+        bool first = true;
+        for (Node* c = copied; c; c = c->next) {
+            if (!first) actual += ",";
+            first = false;
+            actual += "[" + std::to_string(c->val) + ",";
+            actual += c->random ? std::to_string(idx[c->random]) : "null";
+            actual += "]";
+        }
+        actual += "]";
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([[1,1],[2,1]])LC");
+    }
+    // case 3
+    {
+        auto v = lctest::parse(R"LC([[3,null],[3,0],[3,null]])LC");
+        std::vector<Node*> nodes;
+        for (auto& e : v.arr) nodes.push_back(new Node(lctest::toInt(e.arr[0])));
+        for (size_t i = 0; i < nodes.size(); i++) {
+            nodes[i]->next = i + 1 < nodes.size() ? nodes[i + 1] : nullptr;
+            if (v.arr[i].arr[1].type != lctest::Value::NUL) nodes[i]->random = nodes[lctest::toInt(v.arr[i].arr[1])];
+        }
+        Solution sol;
+        Node* copied = sol.copyRandomList(nodes.empty() ? nullptr : nodes[0]);
+        std::map<Node*, int> idx; int k = 0;
+        for (Node* c = copied; c; c = c->next) idx[c] = k++;
+        std::string actual = "[";
+        bool first = true;
+        for (Node* c = copied; c; c = c->next) {
+            if (!first) actual += ",";
+            first = false;
+            actual += "[" + std::to_string(c->val) + ",";
+            actual += c->random ? std::to_string(idx[c->random]) : "null";
+            actual += "]";
+        }
+        actual += "]";
+        fails += lctest::checkRaw(++caseNo, actual, R"LC([[3,null],[3,0],[3,null]])LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }

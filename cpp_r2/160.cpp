@@ -114,6 +114,7 @@
 #include <utility>
 #include <vector>
 #include "node.h"
+#include "test_util.h"
 using namespace std;
 
 /**
@@ -132,7 +133,85 @@ public:
 };
 
 int main() {
-    Solution sol;
-    // TODO: 按上方示例输入构造参数，调用函数并核对预期输出
-    return 0;
+    int fails = 0, caseNo = 0;
+    // case 1
+    {
+        int intersectVal = lctest::toInt(lctest::parse(R"LC(8)LC"));
+        auto la = lctest::toIntVec(lctest::parse(R"LC([4,1,8,4,5])LC"));
+        auto lb = lctest::toIntVec(lctest::parse(R"LC([5,6,1,8,4,5])LC"));
+        int skipA = lctest::toInt(lctest::parse(R"LC(2)LC"));
+        int skipB = lctest::toInt(lctest::parse(R"LC(3)LC"));
+        ListNode* common = nullptr;
+        if (intersectVal != 0) {
+            ListNode dummy; ListNode* t = &dummy;
+            for (size_t i = skipA; i < la.size(); i++) { t->next = new ListNode(la[i]); t = t->next; }
+            common = dummy.next;
+        }
+        auto build = [&](const std::vector<int>& v, int skip) {
+            ListNode dummy; ListNode* t = &dummy;
+            int end = intersectVal != 0 ? skip : (int)v.size();
+            for (int i = 0; i < end; i++) { t->next = new ListNode(v[i]); t = t->next; }
+            t->next = common;
+            return dummy.next;
+        };
+        ListNode* A = build(la, skipA);
+        ListNode* B = build(lb, skipB);
+        Solution sol;
+        auto res = sol.getIntersectionNode(A, B);
+        fails += lctest::printOnly(++caseNo, res ? std::to_string(res->val) : "null", R"LC(Intersected at '8')LC");
+    }
+    // case 2
+    {
+        int intersectVal = lctest::toInt(lctest::parse(R"LC(2)LC"));
+        auto la = lctest::toIntVec(lctest::parse(R"LC([1,9,1,2,4])LC"));
+        auto lb = lctest::toIntVec(lctest::parse(R"LC([3,2,4])LC"));
+        int skipA = lctest::toInt(lctest::parse(R"LC(3)LC"));
+        int skipB = lctest::toInt(lctest::parse(R"LC(1)LC"));
+        ListNode* common = nullptr;
+        if (intersectVal != 0) {
+            ListNode dummy; ListNode* t = &dummy;
+            for (size_t i = skipA; i < la.size(); i++) { t->next = new ListNode(la[i]); t = t->next; }
+            common = dummy.next;
+        }
+        auto build = [&](const std::vector<int>& v, int skip) {
+            ListNode dummy; ListNode* t = &dummy;
+            int end = intersectVal != 0 ? skip : (int)v.size();
+            for (int i = 0; i < end; i++) { t->next = new ListNode(v[i]); t = t->next; }
+            t->next = common;
+            return dummy.next;
+        };
+        ListNode* A = build(la, skipA);
+        ListNode* B = build(lb, skipB);
+        Solution sol;
+        auto res = sol.getIntersectionNode(A, B);
+        fails += lctest::printOnly(++caseNo, res ? std::to_string(res->val) : "null", R"LC(Intersected at '2')LC");
+    }
+    // case 3
+    {
+        int intersectVal = lctest::toInt(lctest::parse(R"LC(0)LC"));
+        auto la = lctest::toIntVec(lctest::parse(R"LC([2,6,4])LC"));
+        auto lb = lctest::toIntVec(lctest::parse(R"LC([1,5])LC"));
+        int skipA = lctest::toInt(lctest::parse(R"LC(3)LC"));
+        int skipB = lctest::toInt(lctest::parse(R"LC(2)LC"));
+        ListNode* common = nullptr;
+        if (intersectVal != 0) {
+            ListNode dummy; ListNode* t = &dummy;
+            for (size_t i = skipA; i < la.size(); i++) { t->next = new ListNode(la[i]); t = t->next; }
+            common = dummy.next;
+        }
+        auto build = [&](const std::vector<int>& v, int skip) {
+            ListNode dummy; ListNode* t = &dummy;
+            int end = intersectVal != 0 ? skip : (int)v.size();
+            for (int i = 0; i < end; i++) { t->next = new ListNode(v[i]); t = t->next; }
+            t->next = common;
+            return dummy.next;
+        };
+        ListNode* A = build(la, skipA);
+        ListNode* B = build(lb, skipB);
+        Solution sol;
+        auto res = sol.getIntersectionNode(A, B);
+        fails += lctest::printOnly(++caseNo, res ? std::to_string(res->val) : "null", R"LC(No intersection)LC");
+    }
+    std::cout << (fails ? "\n== FAILED ==" : "\n== ALL PASS ==") << "\n";
+    return fails ? 1 : 0;
 }
